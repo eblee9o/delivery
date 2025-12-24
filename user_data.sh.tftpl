@@ -1,0 +1,48 @@
+#!/bin/bash
+set -euo pipefail
+exec > >(tee -a /var/log/user-data.log) 2>&1
+
+LOCK=/var/local/eksctl_create_done
+if [ -f "$LOCK" ]; then
+  echo "EKS already created. Skip."
+  exit 0
+fi
+
+apt-get update -y
+apt-get install -y curl ca-certificates unzip tar
+
+# 1) kubectl (네 방식 유지 + 안정화)
+curl -O https://s3.us-west-2.amazonaws.com/amazon-eks/1.30.14/2025-08-03/bin/linux/amd64/kubectl
+chmod +x ./kubectl
+
+mkdir -p /home/ubuntu/bin
+cp ./kubectl /home/ubuntu/bin/kubectl
+chown -R ubuntu:ubuntu /home/ubuntu/bin
+install -m 0755 ./kubectl /usr/local/bin/kubectl
+
+if ! grep -q 'export PATH=$HOME/bin:$PATH' /home/ubuntu/.bashrc; then
+  echo 'export PATH=$HOME/bin:$PATH' >> /home/ubuntu/.bashrc
+
+# 2) eksctl
+ARCH=amd64
+PLATFORM=$(uname -s)_$ARCH
+curl -fsSL -o /tmp/eksctl.tar.gz \
+  "https://github.com/eksctl-io/eksctl/releases/latest/download/eksctl_$PLATFORM.tar.gz"
+tar -xzf /tmp/eksctl.tar.gz -C /tmp
+rm -f /tmp/eksctl.tar.gz
+install -m 0755 /tmp/eksctl /usr/local/bin/eksctl
+rm -f /tmp/eksctl
+
+# 3) AWS CLI v2
+curl -fsSL "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "/tmp/awscliv2.zip"
+unzip -q /tmp/awscliv2.zip -d /tmp
+/tmp/aws/install --update
+
+/usr/local/bin/aws --version
+/usr/local/bin/eksctl version
+/usr/local/bin/kubectl version --client=true || true
+fi
+
+echo "bastion bootstrap complete"
+
+
