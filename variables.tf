@@ -5,7 +5,6 @@ variable "region" {
 }
 variable "allowed_ssh_cidr" {
   type = string
-  # 테스트용. 운영이면 본인 공인IP/32로 바꿔.
   default = "0.0.0.0/0"
 }
 variable "key_name" {

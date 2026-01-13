@@ -22,6 +22,7 @@ install -m 0755 ./kubectl /usr/local/bin/kubectl
 
 if ! grep -q 'export PATH=$HOME/bin:$PATH' /home/ubuntu/.bashrc; then
   echo 'export PATH=$HOME/bin:$PATH' >> /home/ubuntu/.bashrc
+fi
 
 # 2) eksctl
 ARCH=amd64
@@ -38,10 +39,12 @@ curl -fsSL "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "/tmp/a
 unzip -q /tmp/awscliv2.zip -d /tmp
 /tmp/aws/install --update
 
+sudo -u ubuntu -H aws eks update-kubeconfig --name test-eks-cluster --region ap-northeast-2
+
 /usr/local/bin/aws --version
 /usr/local/bin/eksctl version
 /usr/local/bin/kubectl version --client=true || true
-fi
+
 
 echo "bastion bootstrap complete"
 
