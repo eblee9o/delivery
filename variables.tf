@@ -41,7 +41,7 @@ variable "node_disk_size" {
 
 variable "node_desired_size" {
   type    = number
-  default = 2
+  default = 1
 }
 
 variable "node_min_size" {
@@ -51,7 +51,7 @@ variable "node_min_size" {
 
 variable "node_max_size" {
   type    = number
-  default = 2
+  default = 1
 }
 
 ### cluster
