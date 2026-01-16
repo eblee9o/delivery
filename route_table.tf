@@ -37,7 +37,7 @@ resource "aws_route_table_association" "test_eks_rt3" {
 #########################Secondary CIDR Route Table#############################################
 #route_table1
 resource "aws_route_table" "test_eks_rt1_pods" {
-  vpc_id = aws_vpc.test_eks_vpc.id
+  vpc_id = aws_vpc_ipv4_cidr_block_association.secondary_cidr.vpc_id
   route {
     cidr_block = "0.0.0.0/0"
     gateway_id = aws_internet_gateway.test_eks_igw.id
@@ -55,7 +55,7 @@ resource "aws_route_table_association" "test_eks_rt1_pods" {
 
 #route_table3
 resource "aws_route_table" "test_eks_rt3_pods" {
-  vpc_id = aws_vpc.test_eks_vpc.id
+  vpc_id = aws_vpc_ipv4_cidr_block_association.secondary_cidr.vpc_id
   route {
     cidr_block = "0.0.0.0/0"
     gateway_id = aws_internet_gateway.test_eks_igw.id

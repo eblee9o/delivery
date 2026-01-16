@@ -4,7 +4,7 @@ variable "region" {
   default = "ap-northeast-2"
 }
 variable "allowed_ssh_cidr" {
-  type = string
+  type    = string
   default = "0.0.0.0/0"
 }
 variable "key_name" {

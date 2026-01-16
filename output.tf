@@ -31,3 +31,18 @@ output "cluster_endpoint" {
 output "update_kubeconfig_cmd" {
   value = "aws eks update-kubeconfig --region ${var.region} --name ${aws_eks_cluster.this.name}"
 }
+
+###########################
+output "test_eks_sb_pods" {
+  description = "Pod subnet ID"
+  value = [
+    aws_subnet.test_eks_sb1_pods.id,
+    aws_subnet.test_eks_sb3_pods.id
+  ]
+}
+
+output "test_eks_sg_pods" {
+  description = "Pods SG ID"
+  value = aws_security_group.test_eks_bastion_sg_pods.id
+}
+

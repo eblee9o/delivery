@@ -27,7 +27,7 @@ resource "aws_subnet" "test_eks_sb3" {
 ###################Secondary CIDR Subnet#######################
 
 resource "aws_subnet" "test_eks_sb1_pods" {
-  vpc_id                  = aws_vpc.test_eks_vpc.id
+  vpc_id                  = aws_vpc_ipv4_cidr_block_association.secondary_cidr.vpc_id
   cidr_block              = "100.64.0.0/19"
   map_public_ip_on_launch = "true"
   availability_zone       = "ap-northeast-2a"
@@ -40,7 +40,7 @@ resource "aws_subnet" "test_eks_sb1_pods" {
 }
 
 resource "aws_subnet" "test_eks_sb3_pods" {
-  vpc_id                  = aws_vpc.test_eks_vpc.id
+  vpc_id                  = aws_vpc_ipv4_cidr_block_association.secondary_cidr.vpc_id
   cidr_block              = "100.64.32.0/19"
   map_public_ip_on_launch = "true"
   availability_zone       = "ap-northeast-2c"
