@@ -7,7 +7,7 @@ resource "aws_route_table" "test_eks_public_rt1" {
     gateway_id = aws_internet_gateway.test_eks_igw.id
   }
   tags = {
-    Name = "test_eks_rt1"
+    Name = "test_eks_public_rt1"
   }
 }
 
