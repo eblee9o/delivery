@@ -6,14 +6,14 @@ output "bastion_public_ip" {
 output "public_subnet_ids" {
   description = "Public subnet IDs for EKS"
   value = [
-    aws_subnet.test_eks_sb1.id,
-    aws_subnet.test_eks_sb3.id
+    aws_subnet.test_public_subnet1.id,
+    aws_subnet.test-public-subnet3.id
   ]
 }
 
 output "public_subnets_csv" {
   description = "Comma-separated public subnet IDs for eksctl"
-  value       = join(",", [aws_subnet.test_eks_sb1.id, aws_subnet.test_eks_sb3.id])
+  value       = join(",", [aws_subnet.test_public_subnet1.id, aws_subnet.test-public-subnet3.id])
 }
 
 output "bastion_ssh" {
@@ -33,16 +33,16 @@ output "update_kubeconfig_cmd" {
 }
 
 ###########################
-output "test_eks_sb_pods" {
-  description = "Pod subnet ID"
-  value = [
-    aws_subnet.test_eks_sb1_pods.id,
-    aws_subnet.test_eks_sb3_pods.id
-  ]
-}
-
-output "test_eks_sg_pods" {
-  description = "Pods SG ID"
-  value = aws_security_group.test_eks_bastion_sg_pods.id
-}
-
+# output "test_eks_sb_pods" {
+#   description = "Pod subnet ID"
+#   value = [
+#     aws_subnet.test_eks_sb1_pods.id,
+#     aws_subnet.test_eks_sb3_pods.id
+#   ]
+# }
+# 
+# output "test_eks_sg_pods" {
+#   description = "Pods SG ID"
+#   value       = aws_security_group.test_eks_bastion_sg_pods.id
+# }
+# 
