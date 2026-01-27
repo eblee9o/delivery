@@ -8,9 +8,9 @@ resource "aws_eks_node_group" "ng1" {
   disk_size      = var.node_disk_size
 
   scaling_config {
-    desired_size = 2
+    desired_size = 3
     min_size     = 1
-    max_size     = 2
+    max_size     = 4
   }
 
   depends_on = [
