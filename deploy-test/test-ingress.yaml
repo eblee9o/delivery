@@ -1,14 +1,14 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: test-ingress
-  # 사용하는 Ingress Controller에 맞게 둘 중 하나만 쓰세요.
-  # annotations:
-  #   kubernetes.io/ingress.class: nginx
+  name: ingress-2048
+  namespace: test-ingress-alb
+  annotations:
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/subnets: subnet-059e34310a5f9cacd,subnet-0d5ce0f125633d794
 spec:
-  # 또는 ingressClassName 사용 (권장)
-  # ingressClassName: nginx
-
+  ingressClassName: alb
   rules:
   - http:
       paths:
@@ -16,7 +16,7 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: test-svc      # <- 서비스 이름
+            name: service-2048
             port:
-              number: 80        # <- 서비스 포트(숫자)
+              number: 80
 
