@@ -4,9 +4,11 @@ metadata:
   name: ingress-2048
   namespace: test-ingress-alb
   annotations:
+    kubernetes.io/ingress.class: alb
     alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/target-type: ip
-    alb.ingress.kubernetes.io/subnets: subnet-059e34310a5f9cacd,subnet-0d5ce0f125633d794
+    alb.ingress.kubernetes.io/healthcheck-path: /
+    alb.ingress.kubernetes.io/subnets: subnet-0b953f2d88bd1e719,subnet-0ece418ad11ca4f40
 spec:
   ingressClassName: alb
   rules:
