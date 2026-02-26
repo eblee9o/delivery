@@ -8,7 +8,7 @@ locals {
 
 resource "aws_instance" "test_eks_bastion" {
   ami                         = "ami-0a71e3eb8b23101ed"
-  instance_type               = "t3.micro"
+  instance_type               = "t3.small"
   subnet_id                   = aws_subnet.test_public_subnet1.id
   vpc_security_group_ids      = [aws_security_group.test_eks_bastion_sg.id]
   key_name                    = var.key_name
@@ -16,9 +16,10 @@ resource "aws_instance" "test_eks_bastion" {
   associate_public_ip_address = true
 
   # 템플릿에 변수 전달
-  user_data = templatefile("${path.module}/user_data.sh.tftpl", {
+    user_data = templatefile("${path.module}/user_data.sh.tftpl", {
     region       = var.region
     cluster_name = aws_eks_cluster.this.name
+
   })
 
   root_block_device {
