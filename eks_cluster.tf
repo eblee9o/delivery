@@ -1,6 +1,7 @@
 resource "aws_eks_cluster" "this" {
-  name     = var.eks_cluster_name
-  role_arn = aws_iam_role.eks_cluster_role.arn
+  name = var.eks_cluster_name
+  #   role_arn = aws_iam_role.eks_cluster_role.arn
+  role_arn = module.iam_policy.eks_cluster_role_arn
 
   vpc_config {
     subnet_ids              = [aws_subnet.test-private-subnet1.id, aws_subnet.test-private-subnet3.id]
@@ -17,9 +18,13 @@ resource "aws_eks_cluster" "this" {
     Name = var.eks_cluster_name
   })
 
+  #   depends_on = [
+  #     aws_iam_role_policy_attachment.eks_cluster_policy,
+  #     aws_iam_role_policy_attachment.eks_vpc_resource_controller
+  #   ]
+
   depends_on = [
-    aws_iam_role_policy_attachment.eks_cluster_policy,
-    aws_iam_role_policy_attachment.eks_vpc_resource_controller
+    module.iam_policy
   ]
 }
 
