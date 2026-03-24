@@ -9,7 +9,7 @@ variable "allowed_ssh_cidr" {
 }
 variable "key_name" {
   type    = string
-  default = "demo-key"
+  default = "new-demo-key"
 }
 
 ###instance

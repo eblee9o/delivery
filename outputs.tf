@@ -17,7 +17,8 @@ output "public_subnets_csv" {
 }
 
 output "bastion_ssh" {
-  value = "ssh -i ./demo-key.ppk ubuntu@${aws_instance.test_eks_bastion.public_ip}"
+  # value = "ssh -i ./demo-key.ppk ubuntu@${aws_instance.test_eks_bastion.public_ip}"
+  value = "ssh -i ~/Downloads/new-demo-key.pem ubuntu@${aws_instance.test_eks_bastion.public_ip}"
 }
 
 output "cluster_name" {
