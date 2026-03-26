@@ -81,11 +81,13 @@ resource "aws_subnet" "test-private-subnet1" {
   tags = {
     Name                                     = "test-private-subnet1"
     "kubernetes.io/cluster/test-eks-cluster" = "shared"
+    "kubernetes.io/role/internal-elb"        = "1"
   }
 
   tags_all = {
     Name                                     = "test-private-subnet1"
     "kubernetes.io/cluster/test-eks-cluster" = "shared"
+    "kubernetes.io/role/internal-elb"        = "1"
   }
 
   vpc_id            = aws_vpc.test_eks_vpc.id
@@ -106,11 +108,13 @@ resource "aws_subnet" "test-private-subnet3" {
   tags = {
     Name                                     = "test-private-subnet3"
     "kubernetes.io/cluster/test-eks-cluster" = "shared"
+    "kubernetes.io/role/internal-elb"        = "1"
   }
 
   tags_all = {
     Name                                     = "test-private-subnet3"
     "kubernetes.io/cluster/test-eks-cluster" = "shared"
+    "kubernetes.io/role/internal-elb"        = "1"
   }
 
   vpc_id            = aws_vpc.test_eks_vpc.id
