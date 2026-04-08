@@ -8,36 +8,11 @@ if [ -f "$LOCK" ]; then
   exit 0
 fi
 
-export DEBIAN_FRONTEND=noninteractive
-
 apt-get update -y
-apt-get install -y \
-  curl \
-  ca-certificates \
-  unzip \
-  tar \
-  gnupg \
-  lsb-release \
-  software-properties-common \
-  openjdk-17-jdk \
-  docker.io
+apt-get install -y curl ca-certificates unzip tar
 
-# 0) Java 17 확인
-java -version
-
-# 0-1) Docker 활성화
-systemctl enable docker
-systemctl start docker
-usermod -aG docker ubuntu
-
-docker --version || true
-
-# 1) kubectl 
-KUBECTL_VERSION="1.30.14"
-KUBECTL_BUILD_DATE="2025-08-03"
-ARCH="amd64"
-
-curl -O "https://s3.us-west-2.amazonaws.com/amazon-eks/$${KUBECTL_VERSION}/$${KUBECTL_BUILD_DATE}/bin/linux/$${ARCH}/kubectl"
+# 1) kubectl (네 방식 유지 + 안정화)
+curl -O https://s3.us-west-2.amazonaws.com/amazon-eks/1.30.14/2025-08-03/bin/linux/amd64/kubectl
 chmod +x ./kubectl
 
 mkdir -p /home/ubuntu/bin
@@ -51,9 +26,9 @@ fi
 
 # 2) eksctl
 ARCH=amd64
-PLATFORM=$(uname -s)_$${ARCH}
+PLATFORM=$(uname -s)_$ARCH
 curl -fsSL -o /tmp/eksctl.tar.gz \
-  "https://github.com/eksctl-io/eksctl/releases/latest/download/eksctl_$${PLATFORM}.tar.gz"
+  "https://github.com/eksctl-io/eksctl/releases/latest/download/eksctl_$PLATFORM.tar.gz"
 tar -xzf /tmp/eksctl.tar.gz -C /tmp
 rm -f /tmp/eksctl.tar.gz
 install -m 0755 /tmp/eksctl /usr/local/bin/eksctl
@@ -64,12 +39,13 @@ curl -fsSL "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "/tmp/a
 unzip -q /tmp/awscliv2.zip -d /tmp
 /tmp/aws/install --update
 
-# 4) kubeconfig 연결
-sudo -u ubuntu -H aws eks update-kubeconfig --name ${cluster_name} --region ${region}
+sudo -u ubuntu -H aws eks update-kubeconfig --name test-eks-cluster --region ap-northeast-2
 
-# 5) 버전 확인
 /usr/local/bin/aws --version
 /usr/local/bin/eksctl version
 /usr/local/bin/kubectl version --client=true || true
 
-touch "$LOCK"
+
+echo "bastion bootstrap complete"
+
+
