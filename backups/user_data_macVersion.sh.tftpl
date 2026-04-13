@@ -13,7 +13,6 @@ export DEBIAN_FRONTEND=noninteractive
 apt-get update -y
 apt-get install -y \
   curl \
-  wget \
   ca-certificates \
   unzip \
   tar \
@@ -26,36 +25,6 @@ apt-get install -y \
 # 0) Java 17 확인
 java -version
 
-# 0-0) Gradle 8.14.4 설치
-GRADLE_VERSION="8.14.4"
-GRADLE_ZIP="gradle-${GRADLE_VERSION}-bin.zip"
-GRADLE_DIR="/opt/gradle/gradle-${GRADLE_VERSION}"
-
-if [ ! -d "$GRADLE_DIR" ]; then
-  cd /tmp
-  wget -O "$GRADLE_ZIP" "https://services.gradle.org/distributions/${GRADLE_ZIP}"
-  mkdir -p /opt/gradle
-  unzip -o "$GRADLE_ZIP" -d /opt/gradle
-fi
-
-cat > /etc/profile.d/gradle.sh <<EOF
-export GRADLE_HOME=${GRADLE_DIR}
-export PATH=\$GRADLE_HOME/bin:\$PATH
-EOF
-
-chmod +x /etc/profile.d/gradle.sh
-
-if ! grep -q 'GRADLE_HOME=/opt/gradle/gradle-8.14.4' /home/ubuntu/.bashrc; then
-  cat >> /home/ubuntu/.bashrc <<'EOF'
-
-export GRADLE_HOME=/opt/gradle/gradle-8.14.4
-export PATH=$GRADLE_HOME/bin:$PATH
-EOF
-fi
-
-# 현재 스크립트에서 바로 검증
-"${GRADLE_DIR}/bin/gradle" -v
-
 # 0-1) Docker 활성화
 systemctl enable docker
 systemctl start docker
@@ -63,7 +32,7 @@ usermod -aG docker ubuntu
 
 docker --version || true
 
-# 1) kubectl
+# 1) kubectl 
 KUBECTL_VERSION="1.30.14"
 KUBECTL_BUILD_DATE="2025-08-03"
 ARCH="amd64"
@@ -102,6 +71,5 @@ sudo -u ubuntu -H aws eks update-kubeconfig --name ${cluster_name} --region ${re
 /usr/local/bin/aws --version
 /usr/local/bin/eksctl version
 /usr/local/bin/kubectl version --client=true || true
-"${GRADLE_DIR}/bin/gradle" -v
 
 touch "$LOCK"
