@@ -22,6 +22,7 @@ resource "aws_instance" "test_eks_bastion" {
     cluster_name = aws_eks_cluster.this.name
 
   })
+  user_data_replace_on_change = true
 
   root_block_device {
     volume_size = 20
